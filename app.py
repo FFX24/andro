@@ -48,7 +48,9 @@ def apiViewByFilter():
     "instagram":"https://www.instagram.com/",
     "battlenet":"https://eu.account.blizzard.com/gifts/navbar",
     "steam":"https://store.steampowered.com/account/",
-    "youtube":"https://studio.youtube.com/"
+    "youtube":"https://studio.youtube.com/",
+    "netflix":"https://www.netflix.com/YourAccount",
+    "roblox":"https://www.roblox.com/home",
   }
 })
 if __name__ == '__main__':
