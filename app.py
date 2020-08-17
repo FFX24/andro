@@ -1,16 +1,9 @@
-import sqlite3
 import flask
 import requests
 from bs4 import BeautifulSoup as bs
 from flask_restful import Api, Resource, reqparse
 import json
-conn = sqlite3.connect("users.db")
-cursor = conn.cursor()
-'''
-cursor.execute("""CREATE TABLE data
-                  (param_name text, value text)
-               """)
-'''
+
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -27,25 +20,6 @@ def start():
         return list_of_license
     except Exception as err:
         print(f'Critical error - {err}')
-def check_license(uuid):
-    conn = sqlite3.connect('users.db')
-    cur = conn.cursor()
-    all_users = cur.execute('SELECT * FROM users').fetchall()
-    if len(all_users)>0:
-        return True
-    else:
-        return False
-def add_new_user(uuid, exp_date):
-    conn = sqlite3.connect("users.db")
-    cursor = conn.cursor()
-    sql = f"SELECT * FROM users WHERE uuid={uuid}"
-    cursor.execute(sql)
-    count = cursor.fetchall()
-    if len(count) == 0:
-        cursor.execute(f"""INSERT INTO users
-                          VALUES ('{uuid}', '{exp_date}')"""
-                       )
-    conn.commit()
 
 @app.route('/api/v1/users/all', methods=['GET'])
 
@@ -77,5 +51,6 @@ def apiViewByFilter():
     "youtube":"https://studio.youtube.com/"
   }
 })
-app.run(threaded=True, port=5000)
+if __name__ == '__main__':
+    app.run(threaded=True, port=5000)
 
