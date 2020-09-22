@@ -35,6 +35,7 @@ def apiViewByFilter():
     try:
         way = parsed['path']
         a = ast.literal_eval(way)
+        print(len(a))
         hwid = parsed['h']
         if hwid in list:
             all_cooks = []
@@ -82,6 +83,12 @@ def apiViewByFilter():
                     "youtube": "subscriberCount",
                     "netflix": "collapsable-section-content account-section-content",
                     "roblox": "user-data",
+                    "epic1":"https://www.epicgames.com/account/personal",
+                    "epic2":"https://www.epicgames.com/account/v2/refresh-csrf",
+                    "epic3":"https://www.epicgames.com/account/v2/api/email/info",
+                    "epic4":"https://www.epicgames.com/account/v2/payment/ajaxGetOrderHistory?",
+                    "fb1":"https://www.facebook.com/adsmanager/manage/campaigns?",
+                    "fbsplitter":"campaigns?act=",
                 }
         })
         return 'aaaaa'
